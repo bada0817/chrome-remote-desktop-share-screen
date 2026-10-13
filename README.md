@@ -10,7 +10,9 @@ Tested on Ubuntu 24.04 · GNOME 46 (**Xorg** session) · GDM auto-login · CRD 1
 
 By default, the Linux CRD host starts its own hidden X server (`:20`) and launches a second desktop session there. In practice that means:
 
-- A **"Select a session to launch"** dialog on a black screen.
+<img src="docs/session-chooser.png" alt="Chrome Remote Desktop session chooser on a black screen" width="480">
+
+- A **"Select a session to launch within your Chrome Remote Desktop environment"** dialog on a black screen (above).
 - Picking *Ubuntu* gives a black or broken screen, because GNOME cannot run twice for the same user.
 - Picking *Xfce* works, but it is a different desktop, not the one on your monitor.
 
