@@ -6,6 +6,8 @@ Make **Chrome Remote Desktop (CRD) on Linux share the screen you already see on 
 
 Tested on Ubuntu 24.04 · GNOME 46 (**Xorg** session) · GDM auto-login · CRD 155.0.8059.19.
 
+Write-up (Korean): https://bada0817.tistory.com/24
+
 ## The problem
 
 By default, the Linux CRD host starts its own hidden X server (`:20`) and launches a second desktop session there. In practice that means:
