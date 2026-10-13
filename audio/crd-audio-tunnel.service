@@ -1,0 +1,12 @@
+[Unit]
+Description=Forward desktop audio to Chrome Remote Desktop
+After=pipewire-pulse.service
+Wants=pipewire-pulse.service
+
+[Service]
+ExecStart=%h/.local/bin/crd-audio-tunnel
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=default.target

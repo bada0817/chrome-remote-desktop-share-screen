@@ -73,10 +73,21 @@ journalctl -u chrome-remote-desktop@$USER -n 50
 - **Requires an Xorg session.** This patch does not work on Wayland. Newer CRD has a "GDM-managed" mode, but it supports only GNOME 49+ on Wayland.
 - **Turn off "Resize desktop to fit"** in the CRD client. Otherwise it may change your physical monitor's resolution.
 - **People near your computer can see what you do.** The monitor shows everything you do remotely.
-- **No audio.** Desktop apps output to your normal audio device, not to CRD's audio pipe.
+- **Audio needs the optional add-on below.** Desktop apps output to your normal audio device, not to CRD's private audio server.
 - **Monitor changes are fine.** `:0` is the X display, not a monitor port. Switching HDMI ↔ DP or adding monitors keeps working.
 - **Works alongside Sunshine/Moonlight.** Both just capture `:0`.
 - **After a CRD update,** the apt hook re-applies the patch. If you still see the session chooser, run `sudo systemctl restart chrome-remote-desktop@$USER`.
+
+## Remote audio (optional)
+
+CRD only forwards audio from its own private PipeWire server. `install-audio.sh` adds a **"Chrome Remote Desktop"** output device to your desktop's PipeWire. That device tunnels into CRD's server. A small user service recreates the tunnel whenever CRD restarts.
+
+```bash
+bash install-audio.sh            # as your normal user, no sudo
+bash install-audio.sh --uninstall
+```
+
+While connected, pick **Chrome Remote Desktop** in *Settings → Sound → Output*. Your local speakers are silent while it is selected. Switch back when you use the computer in person. Expect about 0.2 s of extra audio delay.
 
 ## Uninstall
 

@@ -60,10 +60,21 @@ sudo systemctl restart chrome-remote-desktop@$USER
 - **Xorg 세션이 필요합니다.** Wayland에서는 동작하지 않습니다. 최신 CRD의 "GDM-managed" 모드는 GNOME 49 이상 + Wayland 전용입니다.
 - **"원격 데스크톱 크기 조정" 옵션은 끄세요.** 켜 두면 실제 모니터 해상도가 바뀔 수 있습니다.
 - **원격 조작이 그대로 보입니다.** 원격으로 하는 작업이 실제 모니터에도 그대로 보입니다.
-- **소리는 전달되지 않습니다.**
+- **소리는 아래의 선택 기능을 설치해야 전달됩니다.**
 - **모니터 구성을 바꿔도 됩니다.** HDMI를 DP로 바꾸거나 모니터를 추가해도 그대로 동작합니다. `:0`은 모니터 번호가 아니라 X 디스플레이 번호이기 때문입니다.
 - **Sunshine/Moonlight와 함께 써도 됩니다.**
 - **CRD 업데이트 후** 세션 선택 창이 다시 보이면 `sudo systemctl restart chrome-remote-desktop@$USER`를 실행하세요.
+
+## 원격 소리 (선택)
+
+CRD는 자기 전용 PipeWire 서버로 들어온 소리만 전달합니다. `install-audio.sh`를 실행하면 데스크톱 PipeWire에 **"Chrome Remote Desktop"** 출력 장치가 생깁니다. 이 장치로 나가는 소리는 CRD 전용 서버로 전달됩니다. CRD가 재시작되면 작은 사용자 서비스가 연결을 자동으로 다시 만듭니다.
+
+```bash
+bash install-audio.sh            # 일반 사용자로 실행 (sudo 없이)
+bash install-audio.sh --uninstall
+```
+
+원격으로 접속했을 때 *설정 → 사운드 → 출력*에서 **Chrome Remote Desktop**을 고르세요. 이 장치를 고른 동안에는 컴퓨터 스피커에서 소리가 나지 않습니다. 직접 앞에서 쓸 때는 원래 장치로 바꾸세요. 소리가 0.2초 정도 늦게 들릴 수 있습니다.
 
 ## 제거
 

@@ -1,0 +1,24 @@
+#!/bin/bash
+# Keep a "Chrome Remote Desktop" output device in the desktop's PipeWire that
+# forwards audio into Chrome Remote Desktop's private audio server, so sound
+# from the shared :0 session reaches the remote client.
+# Pick that device in Settings > Sound > Output to hear audio remotely.
+
+SINK=crd_remote
+CRD_SINK=chrome_remote_desktop_session
+
+while true; do
+  sock=$(ls -d "$XDG_RUNTIME_DIR"/crd_audio\#*/native 2>/dev/null | head -1)
+  if [ -S "$sock" ]; then
+    module=$(pactl list short modules | awk -v s="sink_name=$SINK" '$2 == "module-tunnel-sink" && index($0, s) {print $1}')
+    # Count streams arriving at CRD's sink; 0 means the tunnel is broken or missing.
+    linked=$(PULSE_SERVER="unix:$sock" pactl list short sink-inputs 2>/dev/null | wc -l)
+    if [ -z "$module" ] || [ "$linked" -eq 0 ]; then
+      [ -n "$module" ] && pactl unload-module "$module"
+      pactl load-module module-tunnel-sink server="unix:$sock" sink="$CRD_SINK" \
+        sink_name="$SINK" 'sink_properties=device.description="Chrome\ Remote\ Desktop"' \
+        >/dev/null && echo "Tunnel to $sock (re)created"
+    fi
+  fi
+  sleep 5
+done
